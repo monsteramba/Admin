@@ -1,13 +1,18 @@
 <?php
 	
 	$link=mysqli_connect("localhost", "root", "" ,"energymeter");
-
-	$queryc = "	SELECT meter_id, SUM(kilos)
+	do {
+		$queryc = "	SELECT meter_id, SUM(kilos)
 				FROM meter_pop
 				GROUP BY meter_id; ";
 
 
 	$finalmd = mysqli_query($link,$querymd); 
+
+
+
+	}
+	 
 
 
 
@@ -24,15 +29,36 @@
 CREATE VIEW view1 AS 
 SELECT meter_id,SUM(kilos) AS final 
 FROM meter_pop
+WHERE MONTH(CURDATE()) = MONTH(dtime)
 GROUP BY meter_id;
 
 //updating the 
 
 
 //updating the monthwise table from the view 
-INSERT INTO monthwise(meter_id,final_read)
-SELECT * FROM view1
-WHERE meter_id=view1.meter_id;
+UPDATE monthwise
+SET final_read=( SELECT final FROM view1)
+WHERE meter_id = (SELECT meter_id FROM view1)AND smon = MONTHNAME(CURDATE() - INTERVAL 1 MONTH);
+
+
+INSERT INTO monthwise(meter_id,initial_read,smon)
+SELECT *,MONTHNAME(CURDATE()) FROM view1;
+
+
+//updating the initial value of the next month
+
+
+
+//calculating the consumed value
+UPDATE  monthwise 
+SET consumed = (final_read - initial_read) 
+WHERE smon = MONTHNAME(CURDATE());
+
 
 /// droppping the view
 drop view view1
+
+//updating the initial read of the month from the last month 
+update 
+
+// calculating the consumed units 

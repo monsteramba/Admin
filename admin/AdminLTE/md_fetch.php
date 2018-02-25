@@ -13,6 +13,7 @@ echo '<table id="example2" class="table table-bordered table-hover">
                                 <tr>
                                   <b>
                                     <center>
+                                    <th>Month</th>
                                     <th>Initial Reading</th>
                                     <th>Final Reading </th>
                                     <th>Units Consumed</th>
@@ -24,6 +25,7 @@ echo '<table id="example2" class="table table-bordered table-hover">
                               <tbody>';
 while ($mdrow=mysqli_fetch_array($finalmd,MYSQL_ASSOC)) {
 echo "<tr>";
+echo '<td>' .$mdrow['smon']. "</a></td>";
 echo '<td>' .$mdrow['initial_read']. "</a></td>";
 echo "<td>" .$mdrow['final_read']. "</td>";
 echo "<td>" .$mdrow['consumed']. "</td>";
@@ -39,4 +41,18 @@ echo '</tbody>
 
 echo "</body></html>";
 
+
+
+
+do {
+    $queryc = " SELECT meter_id, SUM(kilos)
+        FROM meter_pop
+        GROUP BY meter_id; ";
+
+
+  $finalmd = mysqli_query($link,$querymd); 
+
+
+
+  }while(True)
 ?>

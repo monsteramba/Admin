@@ -58,7 +58,4 @@ WHERE smon = MONTHNAME(CURDATE());
 /// droppping the view
 drop view view1
 
-//updating the initial read of the month from the last month 
-update 
 
-// calculating the consumed units 

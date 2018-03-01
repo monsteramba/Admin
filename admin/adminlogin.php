@@ -18,7 +18,7 @@ session_start();
     if (($array['admin_id'] == $admin_id) && ($array['pass'] == $pass)){
         $_SESSION['admin_id'] = $admin_id;
         $_SESSION['id'] = $array['id'];
-        header("Location:AdminLTE/index2.php");
+        header("Location:AdminLTE/index.php");
     }
     
     else{

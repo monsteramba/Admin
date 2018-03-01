@@ -24,8 +24,29 @@ $finalv = mysqli_query($link,$queryv);
 $nrow   = mysqli_fetch_array($finalv,MYSQL_ASSOC); 
 
 
+$queryc = " SELECT smon,consumed
+            FROM `monthwise`
+            WHERE meter_id='$meter_id'
+            order by smon desc; ";
+
+$finalc = mysqli_query($link,$queryc); 
+
+
                             
 ?>
+
+<script>
+var myData=[<?php 
+while($crow   = mysqli_fetch_array($finalc,MYSQL_ASSOC))
+    echo $crow['consumed'].','; /* We use the concatenation operator '.' to add comma delimiters after each data value. */
+?>];
+alert (myData);
+var myLabels=[<?php 
+while($crow1  = mysqli_fetch_array($finalc,MYSQL_ASSOC))
+    echo '"'.$crow1['smon'].'",'; /* The concatenation operator '.' is used here to create string values from our database names. */
+?>];
+alert (myLabels);
+</script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -172,7 +193,7 @@ $nrow   = mysqli_fetch_array($finalv,MYSQL_ASSOC);
             <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
           </ul>
         </li> -->
-        <li>
+        <!-- <li>
           <a href="pages/widgets.html">
             <i class="fa fa-th"></i> <span>Widgets</span>
             <span class="pull-right-container">
@@ -255,20 +276,27 @@ $nrow   = mysqli_fetch_array($finalv,MYSQL_ASSOC);
               <small class="label pull-right bg-red">5</small>
             </span>
           </a>
-        </li>
+        </li> -->
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-folder"></i> <span>Examples</span>
+            <i class="fa fa-folder"></i> <span>Bills Section  </span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
+
           <ul class="treeview-menu">
+            <li><a href="pages/examples/invoice.html"><i class="fa fa-circle-o"></i> PAst Bills </a></li>
+            <li><a href="pages/examples/invoice.html"><i class="fa fa-circle-o"></i> Pending bills! </a></li>
+              
+          </ul>
+          <ul class="treeview">
             <li><a href="pages/examples/invoice.html"><i class="fa fa-circle-o"></i> Invoice</a></li>
            
           </ul>
         </li>
-        <li class="treeview">
+        
+       <!--  <li class="treeview">
           <a href="#">
             <i class="fa fa-share"></i> <span>Multilevel</span>
             <span class="pull-right-container">
@@ -300,7 +328,7 @@ $nrow   = mysqli_fetch_array($finalv,MYSQL_ASSOC);
             </li>
             <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
           </ul>
-        </li>
+        </li> -->
         
       </ul>
     </section>
@@ -479,14 +507,7 @@ $nrow   = mysqli_fetch_array($finalv,MYSQL_ASSOC);
                 </button>
                 <div class="btn-group">
                   <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-wrench"></i></button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="#"></a></li>
-                    <li><a href="#"></a></li>
-                    <li><a href="#"></a></li>
-                    <li class="divider"></li>
-                    <li><a href="#"></a></li>
-                  </ul>
+                   
                 </div>
                 <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
               </div>
@@ -494,61 +515,21 @@ $nrow   = mysqli_fetch_array($finalv,MYSQL_ASSOC);
             <!-- /.box-header -->
             <div class="box-body">
               <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
                   <p class="text-center">
                     <strong>Units consumed so far</strong>
                   </p>
-
-                  <div class="chart">
+                    
+                  <div id="myChart">
                     
                    <!-- Chart Canvas -->
-                    <canvas id="salesChart" style="height: 200px;"></canvas>
+                    
                   </div>
                   <!-- /.chart-responsive -->
                 </div>
-                <!-- /.col -->
-                <div class="col-md-4">
-                  <p class="text-center">
-                    <strong>Maxed usage stats</strong>
-                  </p>
-
-                  <div class="progress-group">
-                    <span class="progress-text">Current</span>
-                    <span class="progress-number"><b>20</b>/200</span>
-
-                    <div class="progress sm">
-                      <div class="progress-bar progress-bar-aqua" style="width: 10%"></div>
-                    </div>
-                  </div>
-                  <!-- /.progress-group -->
-                  <div class="progress-group">
-                    <span class="progress-text">Max Power</span>
-                    <span class="progress-number"><b>310</b>/400</span>
-
-                    <div class="progress sm">
-                      <div class="progress-bar progress-bar-red" style="width: 80%"></div>
-                    </div>
-                  </div>
-                  <!-- /.progress-group -->
-                  <div class="progress-group">
-                    <span class="progress-text">Unit</span>
-                    <span class="progress-number"><b>480</b>/800</span>
-
-                    <div class="progress sm">
-                      <div class="progress-bar progress-bar-green" style="width: 80%"></div>
-                    </div>
-                  </div>
-                  <!-- /.progress-group -->
-                  <div class="progress-group">
-                    <span class="progress-text">Peak Power</span>
-                    <span class="progress-number"><b>250</b>/500</span>
-
-                    <div class="progress sm">
-                      <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
-                    </div>
-                  </div>
-                  <!-- /.progress-group -->
-                </div>
+                <div class="col-md-1"></div>
+               
                 <!-- /.col -->
               </div>
               <!-- /.row -->
@@ -642,7 +623,10 @@ $nrow   = mysqli_fetch_array($finalv,MYSQL_ASSOC);
 <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <!-- ChartJS -->
 <script src="bower_components/chart.js/Chart.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<!-- zing charts -->
+<script src= "https://cdn.zingchart.com/zingchart.min.js"></script>
+    <script> zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9","ee6b7db5b51705a13dc2339db3edaf6d"];</script>
 <script src="dist/js/pages/dashboard2.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
@@ -668,5 +652,28 @@ $nrow   = mysqli_fetch_array($finalv,MYSQL_ASSOC);
  }
  
 });
+</script>
+<script type="text/javascript">
+  window.onload=function(){
+zingchart.render({
+    id:"myChart",
+    width:"100%",
+    height:400,
+    data:{
+    "type":"line",
+    "title":{
+        "text":"Data Pulled from MySQL Database"
+    },
+    "scale-x":{
+        "labels":myLabels
+    },
+    "series":[
+        {
+            "values":myData
+        }
+]
+}
+});
+};
 </script>
   

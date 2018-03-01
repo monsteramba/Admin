@@ -41,7 +41,7 @@ if(mysqli_num_rows($result) > 0)
  while($row = mysqli_fetch_array($result))
  {
 
-    echo '<tr><td><form method="post" action="index2.php"><input type="submit" name="id_m" class="btn btn-primary" value='. $row["meter_id"].'></form>';
+    echo '<tr><td><form method="post" action="detailpage.php"><input type="submit" name="id_m" class="btn btn-primary" value='. $row["meter_id"].'></form>';
    
     echo '</td><td>';
     echo $row["name"];
